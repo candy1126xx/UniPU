@@ -10,9 +10,10 @@ import os
 
 import numpy as np
 
-DATA = os.environ.get('UNIPU_CXR_DATA_DIR')
-if not DATA:
-    raise RuntimeError('环境变量 UNIPU_CXR_DATA_DIR 未设置，无法定位 CXR 数据目录')
+_REPO_ROOT = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
+_DEFAULT_DATA = os.path.join(_REPO_ROOT, 'data', 'chestxray14')
+# 环境变量优先；未设置时回退到仓库内 data/chestxray14（基于本文件定位，不依赖当前工作目录）
+DATA = os.environ.get('UNIPU_CXR_DATA_DIR') or _DEFAULT_DATA
 
 VARIANTS = {
     'effusion6': dict(npz='cxr14_effusion6.npz', meta='cxr14_effusion6_meta.json',

@@ -8,9 +8,10 @@ MNIST 数据加载器（任务书v10.22新增）。
 import numpy as np
 import os
 
-DATA_ROOT = os.environ.get('UNIPU_MNIST_DATA_ROOT')
-if not DATA_ROOT:
-    raise RuntimeError('环境变量 UNIPU_MNIST_DATA_ROOT 未设置，无法定位 MNIST 数据目录')
+_REPO_ROOT = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
+_DEFAULT_DATA_ROOT = os.path.join(_REPO_ROOT, 'data', 'mnist')
+# 环境变量优先；未设置时回退到仓库内 data/mnist（基于本文件定位，不依赖当前工作目录）
+DATA_ROOT = os.environ.get('UNIPU_MNIST_DATA_ROOT') or _DEFAULT_DATA_ROOT
 
 # 簇映射：偶数数字→簇号（0→0, 2→1, 4→2, 6→3, 8→4）
 # 奇数数字按顺序分配：1→簇0, 3→簇1, 5→簇2, 7→簇3, 9→簇4

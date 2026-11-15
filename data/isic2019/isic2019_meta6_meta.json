@@ -1,0 +1,65 @@
+{
+  "dataset": "ISIC 2019 (Kaggle andrewmvd/isic-2019)",
+  "positive": "malignant = MEL + BCC + SCC",
+  "cluster_rule": "Age3 x Sex",
+  "cluster_names": [
+    "<45|M",
+    "<45|F",
+    "45-65|M",
+    "45-65|F",
+    "65+|M",
+    "65+|F"
+  ],
+  "meta_names": [
+    "age3",
+    "sex",
+    "site"
+  ],
+  "meta_layout": {
+    "n_cont": 0,
+    "blocks": [
+      [
+        0,
+        3
+      ],
+      [
+        3,
+        5
+      ],
+      [
+        5,
+        14
+      ]
+    ]
+  },
+  "n_train": 19793,
+  "n_test": 5101,
+  "pos_train": 6621,
+  "pos_test": 1761,
+  "cluster_count_train": [
+    3412,
+    4045,
+    3669,
+    3313,
+    3489,
+    1865
+  ],
+  "cluster_pos_train": [
+    524,
+    593,
+    1315,
+    1104,
+    2062,
+    1023
+  ],
+  "class_counts": {
+    "MEL": 4437,
+    "BCC": 3317,
+    "SCC": 628,
+    "NV": 12558,
+    "BKL": 2598,
+    "AK": 864,
+    "VASC": 253,
+    "DF": 239
+  }
+}

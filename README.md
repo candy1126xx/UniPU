@@ -4,12 +4,17 @@
 
 A federated positive-unlabeled (PU) learning framework for label-side selection bias and unlabeled-side composition heterogeneity. In UniPU, a classifier trained with a weighted PU risk is calibrated at the client level to the posterior of the unlabeled set, so its outputs can directly serve as bias-correction weights, merging the estimator and the classifier, and estimation and training, into a single model without an additional propensity-score estimator.
 
-This repository contains only the code needed for the paper's main experiments (end-to-end main results); data and result packages are not distributed with the repository.
+This repository contains the code needed for the paper's main experiments (end-to-end main results). The two small datasets (MNIST, ISIC 2019) are committed under `data/`; the two large datasets (ACSIncome, ChestX-ray14) are git-ignored and must be placed locally as described below. Result packages are not included.
 
 ## Directory structure
 
 ```
 .
+├─ data\                     # datasets (see "Data preparation")
+│  ├─ acs\                   # [git-ignored] ACSIncome parquet files
+│  ├─ chestxray14\           # [git-ignored] ChestX-ray14 feature npz + metadata json
+│  ├─ isic2019\              # [committed] ISIC 2019 feature npz + metadata json
+│  └─ mnist\                 # [committed] MNIST raw IDX files
 ├─ common\
 │  ├─ acs_data.py            # ACSIncome data loader
 │  ├─ cxr14_data.py          # ChestX-ray14 Effusion data loader
@@ -35,29 +40,39 @@ We recommend installing the dependencies in a virtual environment; without a GPU
 
 ## Data preparation and path configuration
 
-The four data loaders no longer contain any local absolute paths. Data directories are specified entirely through environment variables, so the code runs on other machines without source changes. The following environment variables are required:
+Each loader resolves its data directory in two steps:
 
-| Dataset | Environment variable (required) |
-|---|---|
-| ACSIncome | `UNIPU_ACS_DATA_DIR` |
-| MNIST | `UNIPU_MNIST_DATA_ROOT` |
-| ISIC 2019 | `UNIPU_ISIC_DATA_DIR` |
-| ChestX-ray14 | `UNIPU_CXR_DATA_DIR` |
+1. if the corresponding environment variable is set, it is used;
+2. otherwise the loader falls back to a repository-local relative path under `data/`, resolved from the loader file itself, so it does not depend on the current working directory.
 
-If an environment variable is unset or empty when a loader is imported, the loader immediately raises a RuntimeError naming the variable that must be set, instead of falling back to any default path.
+No environment variable is required and no source change is needed: once the files are placed in the expected `data/` subdirectories, the loaders work out of the box. The environment variables remain available to point at a data directory elsewhere.
 
-PowerShell example for the current session:
+| Dataset | Default relative path | Optional override variable |
+|---|---|---|
+| ACSIncome | `data\acs\` | `UNIPU_ACS_DATA_DIR` |
+| MNIST | `data\mnist\` | `UNIPU_MNIST_DATA_ROOT` |
+| ISIC 2019 | `data\isic2019\` | `UNIPU_ISIC_DATA_DIR` |
+| ChestX-ray14 | `data\chestxray14\` | `UNIPU_CXR_DATA_DIR` |
+
+Expected files in each `data/` subdirectory:
+
+- `data\acs\`: folktables ACS 2018 single-year slice parquet files;
+- `data\mnist\`: raw IDX files (`train-images-idx3-ubyte`, etc.);
+- `data\isic2019\`: offline-extracted frozen ResNet-18 feature npz and metadata json;
+- `data\chestxray14\`: offline-extracted frozen ResNet-18 feature npz and metadata json.
+
+### Which datasets are committed
+
+GitHub blocks plain-Git files larger than 100 MiB and warns on files larger than 50 MiB, and recommends keeping a repository below about 1 GB.
+
+- **Committed (small, 95.7 MiB in total):** MNIST and ISIC 2019. Every file is below 50 MiB (the largest is 44.9 MiB), so they are tracked with plain Git, need no Git LFS, and produce no warnings.
+- **Git-ignored (large):** ACSIncome and ChestX-ray14. The ChestX-ray14 npz is about 129.8 MiB (over the 100 MiB hard limit, so a push containing it would be rejected), and the two ACS training parquet files are about 70.6 MiB each (over the 50 MiB warning threshold). These two directories are listed in `.gitignore`.
+
+To run the ACS/CXR experiments, obtain the corresponding files from their public sources (see the paper's Data Availability statement) and place them in `data\acs\` and `data\chestxray14\` respectively, or point the optional override variable at another directory for the current PowerShell session:
 
 ```powershell
 $env:UNIPU_ACS_DATA_DIR = '<your-data-directory>'
 ```
-
-Expected directory contents:
-
-- ACSIncome: folktables ACS 2018 single-year slice parquet files;
-- MNIST: raw IDX files (`train-images-idx3-ubyte`, etc.);
-- ISIC 2019: offline-extracted frozen ResNet-18 feature npz files and metadata json;
-- ChestX-ray14: offline-extracted frozen ResNet-18 feature npz files and metadata json.
 
 ## Running the main experiment
 

@@ -17,9 +17,10 @@ import numpy as np
 import pandas as pd
 from sklearn.preprocessing import StandardScaler
 
-DATA_DIR = os.environ.get('UNIPU_ACS_DATA_DIR')
-if not DATA_DIR:
-    raise RuntimeError('环境变量 UNIPU_ACS_DATA_DIR 未设置，无法定位 ACS 数据目录')
+_REPO_ROOT = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
+_DEFAULT_DATA_DIR = os.path.join(_REPO_ROOT, 'data', 'acs')
+# 环境变量优先；未设置时回退到仓库内 data/acs（基于本文件定位，不依赖当前工作目录）
+DATA_DIR = os.environ.get('UNIPU_ACS_DATA_DIR') or _DEFAULT_DATA_DIR
 
 CONT = ['AGEP', 'WKHP']
 CATS = ['COW', 'SCHL', 'MAR', 'OCCP', 'POBP', 'RELP', 'SEX', 'RAC1P']

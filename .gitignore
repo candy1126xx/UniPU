@@ -218,3 +218,12 @@ __marimo__/
 
 # Streamlit
 .streamlit/secrets.toml
+
+# Datasets
+# Small datasets (MNIST, ISIC 2019; every file is below 50 MiB) are committed normally.
+# Large datasets are kept local and git-ignored because they exceed GitHub's plain-Git
+# limits: the ChestX-ray14 npz is about 130 MiB (over the 100 MiB hard limit), while the
+# ACS parquet files are about 70 MiB each (over the 50 MiB warning threshold).
+# See the "Data preparation" section of README for how to obtain them.
+data/acs/
+data/chestxray14/

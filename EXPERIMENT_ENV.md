@@ -28,3 +28,7 @@ All experiment commands use the virtual-environment interpreter with the depende
 ```
 
 Replace `<python>` with the current virtual environment's Python interpreter; make sure this interpreter has the dependencies installed, rather than using a system-default Python that does not have torch.
+
+## Data location
+
+The loaders read the datasets from the repository-local `data/` directory by default, so no environment variable is needed once the files are in place. The small datasets (MNIST, ISIC 2019) are committed under `data/`, while the large ones (ACSIncome, ChestX-ray14) are git-ignored and must be added locally. See the "Data preparation and path configuration" section of README.md for the expected directory layout, the size-based rationale, and the optional override variables.
