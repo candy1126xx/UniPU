@@ -4,8 +4,7 @@
 
 | 项 | 值 |
 |----|-----|
-| 可执行文件 | `D:\PUDP\.venv\Scripts\python.exe` |
-| venv 前缀 | `D:\PUDP\.venv` |
+| 运行环境 | 项目虚拟环境中的 Python 解释器 |
 | Python 版本 | 3.10.11（MSC v.1929，64-bit AMD64） |
 
 ## 深度学习环境
@@ -19,11 +18,11 @@
 
 ## 用法
 
-所有实验命令都使用绝对路径调用：
+所有实验命令都使用已安装依赖的虚拟环境解释器调用：
 
 ```powershell
 # 示例：跑 ACS 主实验
-& "D:\PUDP\.venv\Scripts\python.exe" experiments\run_proto_7x5.py --dataset acs
+<python> experiments\run_proto_7x5.py --dataset acs
 ```
 
-**不要**直接用 `python` 命令，默认 Python 3.13.16 没有 torch。
+其中 `<python>` 替换为当前虚拟环境的 Python 解释器；请确认该解释器已安装下列依赖，而不是使用未安装 torch 的系统默认 Python。

@@ -10,8 +10,9 @@ import os
 
 import numpy as np
 
-_DEFAULT_DATA = r'D:\Deepseek\data\isic2019'
-DATA = os.environ.get('UNIPU_ISIC_DATA_DIR', _DEFAULT_DATA)
+DATA = os.environ.get('UNIPU_ISIC_DATA_DIR')
+if not DATA:
+    raise RuntimeError('环境变量 UNIPU_ISIC_DATA_DIR 未设置，无法定位 ISIC 数据目录')
 
 VARIANTS = {
     'meta6': dict(npz='isic2019_meta6.npz', meta='isic2019_meta6_meta.json',

@@ -17,8 +17,9 @@ import numpy as np
 import pandas as pd
 from sklearn.preprocessing import StandardScaler
 
-_DEFAULT_DATA_DIR = r'D:\Deepseek\data\acs\folktables_acs_income'
-DATA_DIR = os.environ.get('UNIPU_ACS_DATA_DIR', _DEFAULT_DATA_DIR)
+DATA_DIR = os.environ.get('UNIPU_ACS_DATA_DIR')
+if not DATA_DIR:
+    raise RuntimeError('环境变量 UNIPU_ACS_DATA_DIR 未设置，无法定位 ACS 数据目录')
 
 CONT = ['AGEP', 'WKHP']
 CATS = ['COW', 'SCHL', 'MAR', 'OCCP', 'POBP', 'RELP', 'SEX', 'RAC1P']

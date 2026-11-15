@@ -33,21 +33,21 @@
 
 ## 数据准备与路径配置
 
-四个数据加载器默认指向原始开发机的绝对路径。仓库代码保留这些默认值，同时支持用环境变量覆盖，无需修改源码即可在其他机器上运行：
+四个数据加载器不再内置任何本机绝对路径，数据目录完全由环境变量指定，无需修改源码即可在其他机器上运行。以下环境变量为必填：
 
-| 数据集 | 环境变量 | 默认路径 |
-|---|---|---|
-| ACSIncome | `UNIPU_ACS_DATA_DIR` | `D:\Deepseek\data\acs\folktables_acs_income` |
-| MNIST | `UNIPU_MNIST_DATA_ROOT` | `D:\PUDP\paper_project\data\MNIST\raw` |
-| ISIC 2019 | `UNIPU_ISIC_DATA_DIR` | `D:\Deepseek\data\isic2019` |
-| ChestX-ray14 | `UNIPU_CXR_DATA_DIR` | `D:\Deepseek\data\chestxray\built` |
+| 数据集 | 环境变量（必填） |
+|---|---|
+| ACSIncome | `UNIPU_ACS_DATA_DIR` |
+| MNIST | `UNIPU_MNIST_DATA_ROOT` |
+| ISIC 2019 | `UNIPU_ISIC_DATA_DIR` |
+| ChestX-ray14 | `UNIPU_CXR_DATA_DIR` |
 
-设置环境变量后，加载器优先读取环境变量指向的目录；未设置时使用默认路径。
+导入加载器时若对应环境变量未设置或为空，会立即抛出 RuntimeError 提示需要设置的变量名，而不是回退到任何默认路径。
 
 PowerShell 中为当前会话设置环境变量示例：
 
 ```powershell
-$env:UNIPU_ACS_DATA_DIR = 'C:\data\folktables_acs_income'
+$env:UNIPU_ACS_DATA_DIR = '<你的数据目录>'
 ```
 
 各数据集期望的目录内容：
@@ -59,7 +59,7 @@ $env:UNIPU_ACS_DATA_DIR = 'C:\data\folktables_acs_income'
 
 ## 运行主实验
 
-在仓库根目录运行（将 `<python>` 替换为已配置依赖的解释器，例如原始环境的 `D:\PUDP\.venv\Scripts\python.exe`）：
+在仓库根目录运行（将 `<python>` 替换为已配置依赖的 Python 解释器）：
 
 ```powershell
 # ACSIncome（默认数据集，20 轮）

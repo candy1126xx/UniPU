@@ -10,8 +10,9 @@ import os
 
 import numpy as np
 
-_DEFAULT_DATA = r'D:\Deepseek\data\chestxray\built'
-DATA = os.environ.get('UNIPU_CXR_DATA_DIR', _DEFAULT_DATA)
+DATA = os.environ.get('UNIPU_CXR_DATA_DIR')
+if not DATA:
+    raise RuntimeError('环境变量 UNIPU_CXR_DATA_DIR 未设置，无法定位 CXR 数据目录')
 
 VARIANTS = {
     'effusion6': dict(npz='cxr14_effusion6.npz', meta='cxr14_effusion6_meta.json',
